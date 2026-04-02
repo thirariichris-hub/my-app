@@ -1,3 +1,0 @@
-Folder 'postman_requests' created for individual Postman request JSON files. Export individual requests from the collection or use as templates for VSCode Postman extension.
-
-Example usage in VSCode Postman extension (.http or .rest files):

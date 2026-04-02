@@ -1,0 +1,278 @@
+{
+  "info": {
+    "name": "Inventory API - Complete Collection",
+    "description": "Full test suite with timestamps, request IDs, response time validation.",
+    "_postman_id": "inventory-2024",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:5000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Request-ID",
+                "value": "{{$randomUUID}}"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{$timestamp}}"
+              },
+              {
+                "key": "User-Agent",
+                "value": "InventoryAPI/1.0"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Admin\",\n  \"last_name\": \"Test\",\n  \"email\": \"admin@test.com\",\n  \"password\": \"pass123\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "register"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 201\", () => {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response time < 200ms\", () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});",
+                  "console.log(`Request ID: ${pm.request.headers.get('X-Request-ID')}, Time: ${pm.request.headers.get('X-Timestamp')}, Resp Time: ${pm.response.responseTime}ms`);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Request-ID",
+                "value": "{{$randomUUID}}"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{$timestamp}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"pass123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Logged in\", () => {",
+                  "  pm.expect(pm.response.json()).to.have.property('message', 'Logged in');",
+                  "});",
+                  "console.log(`Login time: ${pm.response.responseTime}ms`);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Request-ID",
+                "value": "{{$randomUUID}}"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{$timestamp}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Electronics\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-ID",
+                "value": "{{$randomUUID}}"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{$timestamp}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status 200\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Array\", () => {",
+                  "  pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products CRUD",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Request-ID",
+                "value": "{{$randomUUID}}"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{$timestamp}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"iPhone\",\n  \"quantity\": 10,\n  \"category_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/products",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Get Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Request-ID",
+                "value": "{{$randomUUID}}"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{$timestamp}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/products",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Stock In",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-Request-ID",
+                "value": "{{$randomUUID}}"
+              },
+              {
+                "key": "X-Timestamp",
+                "value": "{{$timestamp}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_id\": 1,\n  \"type\": \"in\",\n  \"quantity\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/transactions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transactions"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+

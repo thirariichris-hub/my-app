@@ -1,5 +1,7 @@
+import os
+
 class Config:
     SECRET_KEY = "secret"
-    SQLALCHEMY_DATABASE_URI = "sqlite:///inventory.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(os.path.dirname(__file__), "../instance/inventory.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_SECRET_KEY = "jwt-secret"
+

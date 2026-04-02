@@ -2,11 +2,11 @@ from app import create_app
 from app.extensions import db
 
 
-import models.user_model
-import models.product_model
-import models.category_model
-import models.supplier_model
-import models.transaction_model
+import app.models.user_model
+import app.models.product_model
+import app.models.category_model
+import app.models.supplier_model
+import app.models.transaction_model
 
 app = create_app()
 
