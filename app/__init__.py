@@ -27,5 +27,11 @@ def create_app():
         db.session.rollback()
         return jsonify({'error': 'Internal server error', 'timestamp': datetime.utcnow().isoformat()}), 500
 
+    @app.errorhandler(400)
+    def bad_request(error):
+        from flask import jsonify
+        from datetime import datetime
+        return jsonify({'error': 'Bad Request', 'message': str(error.description or error), 'timestamp': datetime.utcnow().isoformat()}), 400
+
     return app
 

@@ -3,7 +3,7 @@ from app.models.product_model import Product
 from app.extensions import db
 
 def check_role(role, allowed_roles):
-    if role not in allowed_roles:
+    if not role or role not in allowed_roles:
         return {'message': 'Access forbidden'}, 403
     return None
 
@@ -35,4 +35,3 @@ def stock_movement(role, data):
     db.session.add(transaction)
     db.session.commit()
     return {'message': 'Transaction recorded'}, 201
-

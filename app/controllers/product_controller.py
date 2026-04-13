@@ -4,7 +4,7 @@ from app.models.supplier_model import Supplier
 from app.extensions import db
 
 def check_role(role, allowed_roles):
-    if role not in allowed_roles:
+    if not role or role not in allowed_roles:
         return {'message': 'Access forbidden'}, 403
     return None
 
@@ -87,4 +87,3 @@ def delete_product(id, role):
     db.session.delete(product)
     db.session.commit()
     return {'message': 'Product deleted'}, 200
-
